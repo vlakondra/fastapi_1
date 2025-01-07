@@ -1,4 +1,4 @@
 '''
-main module
+main module!
 '''
 print(12345)
