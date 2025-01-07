@@ -32,3 +32,38 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/vlakondra/fastapi_1.git
 git push -u origin main
+
+
+
++++++++++++++++++++++++++++++++
+
+
+
+
+# grp = ['иванов','петров','сидоров']
+
+# @app.get("/artists/{quant}/{firstchar}")
+# async def myroot(quant:int,firstchar:str):
+#     query = (
+#         art
+#         .select()
+#         .where(art.name.startswith(firstchar))
+#         .limit(quant)
+#         .dicts()
+#         )
+#     return tuple(query)
+
+
+# #аннотация типов аргументов функции в обычном PY-коде не вызывает ошибок,
+# #если типы паретров не совпадают с типом объявленных аргуметов
+
+
+# @app.get("/models/{model_name}")
+# async def get_model(model_name: mod.ModelName):
+#     if model_name is mod.ModelName.alexnet:
+#         return {"model_name": model_name, "message": "Deep Learning FTW!"}
+
+#     if model_name.value == "lenet":
+#         return {"model_name": model_name, "message": "LeCNN all the images"}
+
+#     return {"model_name": model_name, "message": "Have some residuals"}
