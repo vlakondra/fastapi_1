@@ -16,6 +16,8 @@ from fastapi import FastAPI
 
 app = FastAPI(title ="This Is FastAPI")
 
+app = FastAPI()
+
 
 # @app.on_event("startup")
 # async def startup():
