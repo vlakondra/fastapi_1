@@ -2,7 +2,7 @@
 main module!
 '''
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse, FileResponse
+# from fastapi.responses import JSONResponse, FileResponse
 # from mod import ModelName
 # import mod
 
@@ -17,20 +17,20 @@ from fastapi.responses import JSONResponse, FileResponse
 app = FastAPI(title ="This Is FastAPI")
 
 
-@app.on_event("startup")
-async def startup():
-    print("Стартует...")
+# @app.on_event("startup")
+# async def startup():
+#     print("Стартует...")
 
-@app.on_event("shutdown")
-async def shutdown():
-    print("Закрывается...")
+# @app.on_event("shutdown")
+# async def shutdown():
+#     print("Закрывается...")
 
 @app.get("/")
 async def root():
     '''
     root
     '''
-    return {'data':12345} ##FileResponse('index.html')
+    return {'data':123} ##FileResponse('index.html')
 
 
 @app.get("/first/{quant}")
