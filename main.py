@@ -18,6 +18,11 @@ app = FastAPI(title ="This Is FastAPI")
 
 app = FastAPI()
 
+class Book:
+    def __init__(self, title: str, author: str) -> None:
+        self.title = title
+        self.author = author
+
 
 # @app.on_event("startup")
 # async def startup():
@@ -30,17 +35,22 @@ app = FastAPI()
 @app.get("/")
 async def root():
     '''  root  '''
+    # b = Book('zz',['xx'])
+    # print(b)
     return {'data':123} ##FileResponse('index.html')
 
 
 @app.get("/first/{quant}")
 async def func_first(quant: int):
     '''тестовая функция'''
+
     if not isinstance(quant, int) or quant < 0:
         return {'error': 'Input must be a non-negative integer.'}
     try:
+        b = Book('zz',[99]) #Аннотация типов не препятствует выполнению при неверном типе значения
+        # print(b.author)
         if quant > 10:
             raise ValueError('Input is too big, must be 10 or less.')
-        return {'param': quant ** 2}
+        return {'param': quant ** 2,"data": b.author}
     except ValueError as e:
         return {'Error': str(e)}
