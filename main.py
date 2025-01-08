@@ -6,6 +6,8 @@ from fastapi import FastAPI
 # from mod import ModelName
 # import mod
 
+#https://fastapi.xiniushu.com/ru/
+
 # from peewee import SqliteDatabase
 # from playhouse.reflection import generate_models, print_model, print_table_sql
 
@@ -38,6 +40,8 @@ async def root():
     # b = Book('zz',['xx'])
     # print(b)
     return {'data':123} ##FileResponse('index.html')
+
+
 
 
 @app.get("/first/{quant}")

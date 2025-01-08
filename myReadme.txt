@@ -67,3 +67,13 @@ git push -u origin main
 #         return {"model_name": model_name, "message": "LeCNN all the images"}
 
 #     return {"model_name": model_name, "message": "Have some residuals"}
+
+
+import json
+
+# Load JSON data from the file
+with open('data/studs.json', 'r', encoding='utf-8') as file:
+    students = json.load(file)
+
+# Now 'students' variable contains the list of dictionaries
+print(students)  # This will display the list of dictionaries
