@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>FASTAPI</title>
+
+    <style>
+        td,
+        th {
+            padding: 5px;
+            border: 1px solid silver;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h2>Список исполнителей</h2>
+    <div>
+        <p>
+            Название:<br />
+            <input id="art" />
+        </p>
+
+        <p>
+            <button id="getBtn">Выполнить</button>
+        </p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя исполнителя</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Получение всех пользователей
+        async function getArtists () {
+            //получаем введенное значение имени исполнителя
+            const chars = document.getElementById("art").value;
+            // формируем и отправляем запрос (fetch), получаем ответ
+            const response = await fetch("/artists/" + chars, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            // если запрос прошел нормально
+            if (response.ok === true) {
+                // получаем данные
+                const arts = await response.json();
+
+                //и формируем строки таблицы
+                const rows = document.querySelector("tbody");
+                rows.replaceChildren() //чистим старые строки, если они есть
+                //строк в таблице пока нет, нужно их построить
+                console.log(arts)
+                // добавляем полученные элементы в таблицу
+                arts.forEach(art => rows.append(row(art)));
+            }
+        }
+
+        function row (art) {
+            //формируем строку
+            const tr = document.createElement("tr"); //создаем строку (tr)
+
+            const idTd = document.createElement("td"); //создаем ячейку (td)
+            idTd.append(art.artist_id);//добавляем в нее id исполнителя
+            tr.append(idTd); //добавляем ячейку в строку
+
+            const nameTd = document.createElement("td"); //то же самое делаем с именем
+            nameTd.append(art.name);
+            tr.append(nameTd);
+
+            return tr;
+        }
+        //создаем обработчик события click на кнопке 'выполнить'
+        document.getElementById("getBtn").addEventListener("click", () => getArtists());    
+    </script>
+
+</body>
+
+</html>
