@@ -1,21 +1,21 @@
 '''
 main module!
 '''
-import json
 
+import json
+from typing import List, Dict
+
+#Модули FastApi
 from fastapi import FastAPI
 from fastapi.responses import  FileResponse
 
-
-
-#https://fastapi.xiniushu.com/ru/
-
+#Модули PeeWee
 from peewee import SqliteDatabase
 from playhouse.reflection import generate_models#, print_model, print_table_sql
 
+#Инициализация базы данных
 db = SqliteDatabase('chinook.db', pragmas={'foreign_keys': 1})
 models = generate_models(db)
-
 
 app = FastAPI(title ="This Is FastAPI")
 
@@ -24,37 +24,38 @@ class Book:
         self.title = title
         self.author = author
 
+#События инициализации FastApi
+@app.on_event("startup")
+async def startup():
+    print("Стартует...")
 
-# @app.on_event("startup")
-# async def startup():
-#     print("Стартует...")
-
-# @app.on_event("shutdown")
-# async def shutdown():
-#     print("Закрывается...")
+@app.on_event("shutdown")
+async def shutdown():
+    print("Закрывается...")
 
 @app.get("/")
 async def root():
-    '''  root  '''
-
+    '''  Основной маршрут  '''
     return  {'data':123}
 
 @app.get("/students/")
 async def stud_data():
-    '''students'''
+    '''Возвращает данные о студентах'''
     with open('data/studs.json', 'r', encoding='utf-8') as file:
         json_str = file.read()
         dict_list = json.loads(json_str)
 
     return dict_list
 
+
 @app.get("/findart/")
 async def find_art():
+    '''Возвращает интерактивный HTML-файл для поиска исполнителей'''
     return FileResponse('index.html')
 
 @app.get("/artists/{firsts}")
-async def art_data(firsts:str):
-    '''Исполнители'''
+async def art_data(firsts:str) -> List[Dict]:
+    '''Возвращает найденных Исполнителей'''
     art = models['artists']
     query = (art
            .select()
@@ -73,7 +74,7 @@ async def func_first(quant: int):
         b = Book('Толстой',[99]) #Аннотация типов не препятствует выполнению при неверном типе значения
 
         if quant > 10:
-            raise ValueError('Значение парметра не должно превышать 10')
+            raise ValueError('Значение параметра не должно превышать 10')
         return {'param': quant ** 2,"data": b.author}
     except ValueError as e:
         return {'Error': str(e)}
