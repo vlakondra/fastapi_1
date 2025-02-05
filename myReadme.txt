@@ -85,3 +85,8 @@ with open('data/studs.json', 'r', encoding='utf-8') as file:
 
 # Now 'students' variable contains the list of dictionaries
 print(students)  # This will display the list of dictionaries
+
+============================
+Запуск
+1. uvicorn main:app --reload
+2. fastapi dev main.py

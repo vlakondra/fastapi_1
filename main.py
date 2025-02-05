@@ -37,26 +37,33 @@ class Book:
         self.author = author
 
 #События инициализации FastApi
-@app.on_event("startup")
-async def startup() -> None:
-    print("Стартует...")
+# @app.on_event("startup")
+# async def startup() -> None:
+#     print("Стартует...")
 
-@app.on_event("shutdown")
-async def shutdown():
-    print("Закрывается...")
+# @app.on_event("shutdown")
+# async def shutdown():
+#     print("Закрывается...")
 
-@app.get("/{myid}")
-async def root(myid:int):
-    '''  Основной маршрут  '''
-    print('myid',myid)
-    return  {'data':123}
+@app.get("/")
+async def root():
+    ''' Основной маршрут '''
+    # print('myid')  # Removed commented out code for better readability
+    return 123 #{'data': 123}
+
+
+def hook(dct):
+    d={}
+    d['Фамилия'] = dct['fam']
+    d['Имя'] = dct['name']
+    return d
 
 @app.get("/students/")
 async def stud_data():
     '''Возвращает данные о студентах'''
     with open('data/studs.json', 'r', encoding='utf-8') as file:
         json_str = file.read()
-        dict_list = json.loads(json_str)
+        dict_list = json.loads(json_str,object_hook=hook)
 
     return dict_list
 
