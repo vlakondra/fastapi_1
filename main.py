@@ -3,8 +3,8 @@ main module!
 '''
 
 import json
-from typing import List, Dict
-
+from typing import List, Dict, Union
+from pydantic import BaseModel
 
 #Модули FastApi
 from fastapi import FastAPI
@@ -19,6 +19,11 @@ db = SqliteDatabase('chinook.db', pragmas={'foreign_keys': 1})
 models = generate_models(db)
 
 app = FastAPI(title ="This Is FastAPI")
+
+class Item(BaseModel):
+    name: str
+    price: float
+    is_offer: Union[bool, None] = None
 
 
 def memoize(func):
@@ -36,6 +41,7 @@ class Book:
         self.title = title
         self.author = author
 
+lst = [1,2,3,4,5]
 #События инициализации FastApi
 # @app.on_event("startup")
 # async def startup() -> None:
@@ -57,6 +63,17 @@ def hook(dct):
     d['Фамилия'] = dct['fam']
     d['Имя'] = dct['name']
     return d
+
+@app.get("/iterate/{index}")
+async def get_item(index: int):
+    """
+    Получение элемента по индексу с цикличным поведением
+    """
+    if not lst:
+        return {'error': 'Список пуст'}
+    actual_index = index % len(lst)
+    return {'data': lst[actual_index]}
+
 
 @app.get("/students/")
 async def stud_data():
@@ -91,10 +108,11 @@ async def func_first(quant: int):
     if not isinstance(quant, int) or quant < 0:
         return {'error': 'Параметр должен быть положительным целым числом.'}
     try:
-        b = Book('Толстой', 'Author Name')  # Correcting the author parameter to be a string
+        b = Book('Толстой', 'Author Name')
 
         if quant > 10:
             raise ValueError('Значение параметра не должно превышать 10')
         return {'param': quant ** 2,"data": b.author}
     except ValueError as e:
         return {'Error': str(e)}
+
